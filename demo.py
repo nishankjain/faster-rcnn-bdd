@@ -95,6 +95,9 @@ def parse_args():
   parser.add_argument('--webcam_num', dest='webcam_num',
                       help='webcam ID number',
                       default=-1, type=int)
+  parser.add_argument('--image_output_dir', dest='image_output_dir',
+                      help='directory to load images for demo',
+                      default="images_out")
 
   args = parser.parse_args()
   return args
@@ -361,7 +364,7 @@ if __name__ == '__main__':
       if vis and webcam_num == -1:
           # cv2.imshow('test', im2show)
           # cv2.waitKey(0)
-          result_path = os.path.join(args.image_dir, imglist[num_images][:-4] + "_det.jpg")
+          result_path = os.path.join(args.image_output_dir, imglist[num_images][:-4] + "_det.jpg")
           cv2.imwrite(result_path, im2show)
       else:
           im2showRGB = cv2.cvtColor(im2show, cv2.COLOR_BGR2RGB)
