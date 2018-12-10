@@ -96,7 +96,7 @@ def parse_args():
                       help='webcam ID number',
                       default=-1, type=int)
   parser.add_argument('--image_output_dir', dest='image_output_dir',
-                      help='directory to load images for demo',
+                      help='directory to output images with detections',
                       default="images_out")
 
   args = parser.parse_args()
