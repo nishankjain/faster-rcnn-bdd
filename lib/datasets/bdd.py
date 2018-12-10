@@ -45,12 +45,12 @@ class bdd(imdb):
             else devkit_path
         self._data_path = self._devkit_path
         self._classes = ('__background__',  # always index 0
-                         'aeroplane', 'bicycle', 'bird', 'bike', 'boat',
-                         'bottle', 'bus', 'car', 'cat', 'chair',
-                         'cow', 'diningtable', 'dog', 'horse',
+                         'aeroplane', 'bicycle', 'bird', 'bike',
+                         'bus', 'car', 'cat', 'chair',
+                         'diningtable', 'dog',
                          'motor', 'motorbike', 'person', 'pottedplant', 'rider',
-                         'sheep', 'sofa',
-                         'traffic light', 'traffic sign', 'train', 'truck', 'tvmonitor')
+                         'sofa',
+                         'traffic light', 'traffic sign', 'train', 'truck')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
         self._image_ext = '.jpg'
         self._image_index = self._load_image_set_index()
