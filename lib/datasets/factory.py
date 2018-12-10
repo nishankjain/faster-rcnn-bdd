@@ -12,6 +12,7 @@ from __future__ import print_function
 
 __sets = {}
 from datasets.pascal_voc import pascal_voc
+from datasets.bdd import bdd
 from datasets.coco import coco
 from datasets.imagenet import imagenet
 from datasets.vg import vg
@@ -58,6 +59,11 @@ for split in ['train', 'val', 'val1', 'val2', 'test']:
     devkit_path = 'data/imagenet/ILSVRC/devkit'
     data_path = 'data/imagenet/ILSVRC'
     __sets[name] = (lambda split=split, devkit_path=devkit_path, data_path=data_path: imagenet(split,devkit_path,data_path))
+
+# Set up bdd_<split>
+for split in ['train', 'val', 'trainval', 'test']:
+  name = 'bdd_{}'.format(split)
+  __sets[name] = (lambda split=split: bdd(split))
 
 def get_imdb(name):
   """Get an imdb (image database) by name."""

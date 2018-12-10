@@ -5,7 +5,7 @@ from xml.etree import ElementTree as ET
 from xml.dom import minidom
 
 
-f = open("bdd100k/labels/bdd100k_labels_images_val.json")
+f = open("bdd100k_labels_images_val.json")
 
 for item in ijson.items(f, "item"):
     img = item["name"]
@@ -32,5 +32,5 @@ for item in ijson.items(f, "item"):
             ymax.text = str(round(o['box2d']['y2']))
 
     x = minidom.parseString(ET.tostring(annotation)).toprettyxml()
-    with open("bdd100k/lab/"+img[:-4]+'.xml', 'w') as p:
+    with open("data/bdd_data/Annotations/"+img[:-4]+'.xml', 'w') as p:
         p.write(x)
