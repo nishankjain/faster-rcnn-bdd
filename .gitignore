@@ -210,3 +210,4 @@ bdd-data
 models
 output
 images_*
+*.json
