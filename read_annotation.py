@@ -1,11 +1,11 @@
-
 import ijson
-from xml.etree.ElementTree import Element, SubElement, Comment, tostring,ElementTree
+from xml.etree.ElementTree import Element, SubElement, Comment, tostring, ElementTree
 from xml.etree import ElementTree as ET
 from xml.dom import minidom
 
+f = open("bdd-data/labels/bdd100k_labels_images_train.json")
 
-f = open("bdd100k_labels_images_val.json")
+counter = 0
 
 for item in ijson.items(f, "item"):
     img = item["name"]
@@ -34,3 +34,5 @@ for item in ijson.items(f, "item"):
     x = minidom.parseString(ET.tostring(annotation)).toprettyxml()
     with open("data/bdd_data/Annotations/"+img[:-4]+'.xml', 'w') as p:
         p.write(x)
+    counter += 1
+    print(counter)
