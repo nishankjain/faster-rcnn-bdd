@@ -1,6 +1,6 @@
 import ijson
 
-f = open("bdd-data/labels/bdd100k_labels_images_train.json")
+f = open("bdd-data/labels/bdd100k_labels_images_val.json")
 
 test_images_list = []
 
@@ -15,7 +15,7 @@ for item in ijson.items(f, "item"):
 
 x = "\n".join(test_images_list)
 
-with open("data/bdd_data/ImageSets/Main/trainvaltest.txt", 'w') as p:
+with open("data/bdd_data/ImageSets/Main/testinitial.txt", 'w') as p:
     p.write(x)
 
 print(counter)
