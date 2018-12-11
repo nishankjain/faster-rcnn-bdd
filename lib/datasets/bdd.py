@@ -44,25 +44,13 @@ class bdd(imdb):
         self._devkit_path = self._get_default_path() if devkit_path is None \
             else devkit_path
         self._data_path = self._devkit_path
-        # self._classes = ('__background__',  # always index 0
-        #                  'aeroplane', 'bicycle', 'bird', 'bike',
-        #                  'bus', 'car', 'cat', 'chair',
-        #                  'diningtable', 'dog',
-        #                  'motor', 'motorbike', 'person', 'pottedplant', 'rider',
-        #                  'sofa',
-        #                  'traffic light', 'traffic sign', 'train', 'truck')
         self._classes = ('__background__',  # always index 0
                          'bus', 'bike', 'car',
                          'motor', 'person', 'rider',
                          'traffic light', 'traffic sign', 'train', 'truck')
-        # self._classes = ('__background__',
-        #                 'bus', 'traffic light', 'traffic sign', 'person', 'bike',
-        #                 'truck', 'motor', 'car', 'train', 'rider')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
         self._image_ext = '.jpg'
         self._image_index = self._load_image_set_index()
-        # Default to roidb handler
-        # self._roidb_handler = self.selective_search_roidb
         self._roidb_handler = self.gt_roidb
         self._salt = str(uuid.uuid4())
         self._comp_id = 'comp4'
@@ -109,7 +97,6 @@ class bdd(imdb):
         # Example path to image set file:
         # self._data_path + /ImageSets/Main/trainval.txt
         # self._data_path + /ImageSets/Main/test.txt
-        # TODO: Create trainval.txt and test.txt for BDD data
         image_set_file = os.path.join(self._data_path, 'ImageSets', 'Main',
                                       self._image_set + '.txt')
         assert os.path.exists(image_set_file), \
@@ -147,72 +134,6 @@ class bdd(imdb):
 
         return gt_roidb
 
-    def selective_search_roidb(self):
-        """
-        Return the database of selective search regions of interest.
-        Ground-truth ROIs are also included.
-
-        This function loads/saves from/to a cache file to speed up future calls.
-        """
-        cache_file = os.path.join(self.cache_path,
-                                  self.name + '_selective_search_roidb.pkl')
-
-        if os.path.exists(cache_file):
-            with open(cache_file, 'rb') as fid:
-                roidb = pickle.load(fid)
-            print('{} ss roidb loaded from {}'.format(self.name, cache_file))
-            return roidb
-
-        if int(self._year) == 2007 or self._image_set != 'test':
-            gt_roidb = self.gt_roidb()
-            ss_roidb = self._load_selective_search_roidb(gt_roidb)
-            roidb = imdb.merge_roidbs(gt_roidb, ss_roidb)
-        else:
-            roidb = self._load_selective_search_roidb(None)
-        with open(cache_file, 'wb') as fid:
-            pickle.dump(roidb, fid, pickle.HIGHEST_PROTOCOL)
-        print('wrote ss roidb to {}'.format(cache_file))
-
-        return roidb
-
-    def rpn_roidb(self):
-        if int(self._year) == 2007 or self._image_set != 'test':
-            gt_roidb = self.gt_roidb()
-            rpn_roidb = self._load_rpn_roidb(gt_roidb)
-            roidb = imdb.merge_roidbs(gt_roidb, rpn_roidb)
-        else:
-            roidb = self._load_rpn_roidb(None)
-
-        return roidb
-
-    def _load_rpn_roidb(self, gt_roidb):
-        filename = self.config['rpn_file']
-        print('loading {}'.format(filename))
-        assert os.path.exists(filename), \
-            'rpn data not found at: {}'.format(filename)
-        with open(filename, 'rb') as f:
-            box_list = pickle.load(f)
-        return self.create_roidb_from_box_list(box_list, gt_roidb)
-
-    def _load_selective_search_roidb(self, gt_roidb):
-        filename = os.path.abspath(os.path.join(cfg.DATA_DIR,
-                                                'selective_search_data',
-                                                self.name + '.mat'))
-        assert os.path.exists(filename), \
-            'Selective search data not found at: {}'.format(filename)
-        raw_data = sio.loadmat(filename)['boxes'].ravel()
-
-        box_list = []
-        for i in xrange(raw_data.shape[0]):
-            boxes = raw_data[i][:, (1, 0, 3, 2)] - 1
-            keep = ds_utils.unique_boxes(boxes)
-            boxes = boxes[keep, :]
-            keep = ds_utils.filter_small_boxes(boxes, self.config['min_size'])
-            boxes = boxes[keep, :]
-            box_list.append(boxes)
-
-        return self.create_roidb_from_box_list(box_list, gt_roidb)
-
     def _load_pascal_annotation(self, index):
         """
         Load image and bounding boxes info from XML file in the PASCAL VOC
@@ -222,14 +143,6 @@ class bdd(imdb):
         filename = os.path.join(self._data_path, 'Annotations', index + '.xml')
         tree = ET.parse(filename)
         objs = tree.findall('object')
-        # if not self.config['use_diff']:
-        #     # Exclude the samples labeled as difficult
-        #     non_diff_objs = [
-        #         obj for obj in objs if int(obj.find('difficult').text) == 0]
-        #     # if len(non_diff_objs) != len(objs):
-        #     #     print 'Removed {} difficult objects'.format(
-        #     #         len(objs) - len(non_diff_objs))
-        #     objs = non_diff_objs
         num_objs = len(objs)
 
         boxes = np.zeros((num_objs, 4), dtype=np.uint16)
@@ -243,10 +156,11 @@ class bdd(imdb):
         for ix, obj in enumerate(objs):
             bbox = obj.find('bndbox')
             # Make pixel indexes 0-based
-            x1 = float(bbox.find('xmin').text) - 1
-            y1 = float(bbox.find('ymin').text) - 1
-            x2 = float(bbox.find('xmax').text) - 1
-            y2 = float(bbox.find('ymax').text) - 1
+            x1 = float(bbox.find('xmin').text)
+            y1 = float(bbox.find('ymin').text)
+            x2 = float(bbox.find('xmax').text)
+            y2 = float(bbox.find('ymax').text)
+            print('x1: ' + str(x1) + ', x2: ' + str(x2) + ', y1: ' + str(y1) + ', y2: ' + str(y2))
 
             diffc = obj.find('difficult')
             difficult = 0 if diffc == None else int(diffc.text)
@@ -377,11 +291,3 @@ class bdd(imdb):
         else:
             self.config['use_salt'] = True
             self.config['cleanup'] = True
-
-
-if __name__ == '__main__':
-    d = bdd('trainval')
-    res = d.roidb
-    from IPython import embed;
-
-    embed()

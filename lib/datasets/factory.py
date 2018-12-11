@@ -61,7 +61,7 @@ for split in ['train', 'val', 'val1', 'val2', 'test']:
     __sets[name] = (lambda split=split, devkit_path=devkit_path, data_path=data_path: imagenet(split,devkit_path,data_path))
 
 # Set up bdd_<split>
-for split in ['train', 'val', 'trainval', 'test']:
+for split in ['train', 'val', 'trainval', 'test', 'trainvaltest']:
   name = 'bdd_{}'.format(split)
   __sets[name] = (lambda split=split: bdd(split))
 

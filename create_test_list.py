@@ -10,10 +10,12 @@ for item in ijson.items(f, "item"):
     img = item["name"]
     test_images_list.append(img[:-4])
     counter += 1
+    if counter == 1000:
+        break
 
 x = "\n".join(test_images_list)
 
-with open("data/bdd_data/ImageSets/Main/trainval.txt", 'w') as p:
+with open("data/bdd_data/ImageSets/Main/trainvaltest.txt", 'w') as p:
     p.write(x)
 
 print(counter)
