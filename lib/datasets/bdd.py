@@ -168,7 +168,7 @@ class bdd(imdb):
 
             cls = self._class_to_ind[obj.find('name').text.lower().strip()]
             boxes[ix, :] = [x1, y1, x2, y2]
-            if boxes[ix, 2] < boxes[ix, 0]:
+            if x2 < x1:
                 print(index)
                 print(obj.find('name').text)
             gt_classes[ix] = cls
