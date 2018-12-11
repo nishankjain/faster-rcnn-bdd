@@ -149,8 +149,8 @@ if __name__ == '__main__':
 
   args = parse_args()
 
-  print('Called with args:')
-  print(args)
+  # print('Called with args:')
+  # print(args)
 
   if args.dataset == "pascal_voc":
       args.imdb_name = "voc_2007_trainval"
@@ -186,8 +186,8 @@ if __name__ == '__main__':
   if args.set_cfgs is not None:
     cfg_from_list(args.set_cfgs)
 
-  print('Using config:')
-  pprint.pprint(cfg)
+  # print('Using config:')
+  # pprint.pprint(cfg)
   np.random.seed(cfg.RNG_SEED)
 
   #torch.backends.cudnn.benchmark = True
