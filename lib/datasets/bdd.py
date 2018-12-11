@@ -160,7 +160,7 @@ class bdd(imdb):
             y1 = float(bbox.find('ymin').text)
             x2 = float(bbox.find('xmax').text)
             y2 = float(bbox.find('ymax').text)
-            print('x1: ' + str(x1) + ', x2: ' + str(x2) + ', y1: ' + str(y1) + ', y2: ' + str(y2))
+            # print('x1: ' + str(x1) + ', y1: ' + str(y1) + ', x2: ' + str(x2) + ', y2: ' + str(y2))
 
             diffc = obj.find('difficult')
             difficult = 0 if diffc == None else int(diffc.text)
@@ -168,6 +168,9 @@ class bdd(imdb):
 
             cls = self._class_to_ind[obj.find('name').text.lower().strip()]
             boxes[ix, :] = [x1, y1, x2, y2]
+            if boxes[ix, 2] < boxes[ix, 0]:
+                print(index)
+                print(obj.find('name').text)
             gt_classes[ix] = cls
             overlaps[ix, cls] = 1.0
             seg_areas[ix] = (x2 - x1 + 1) * (y2 - y1 + 1)
