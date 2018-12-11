@@ -92,10 +92,10 @@ def combined_roidb(imdb_names, training=True):
 
   def get_training_roidb(imdb):
     """Returns a roidb (Region of Interest database) for use in training."""
-    if cfg.TRAIN.USE_FLIPPED:
-      print('Appending horizontally-flipped training examples...')
-      imdb.append_flipped_images()
-      print('done')
+    # if cfg.TRAIN.USE_FLIPPED:
+    #   print('Appending horizontally-flipped training examples...')
+    #   imdb.append_flipped_images()
+    #   print('done')
 
     print('Preparing training data...')
 
