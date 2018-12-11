@@ -51,7 +51,7 @@ class bdd(imdb):
         #                  'motor', 'motorbike', 'person', 'pottedplant', 'rider',
         #                  'sofa',
         #                  'traffic light', 'traffic sign', 'train', 'truck')
-        self.classes = ('__background__',
+        self._classes = ('__background__',
                         'bus', 'traffic light', 'traffic sign', 'person', 'bike',
                         'truck', 'motor', 'car', 'train', 'rider')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
