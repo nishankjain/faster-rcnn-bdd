@@ -61,7 +61,7 @@ def parse_args():
                       nargs=argparse.REMAINDER)
   parser.add_argument('--load_dir', dest='load_dir',
                       help='directory to load models',
-                      default="/srv/share/jyang375/models")
+                      default="models")
   parser.add_argument('--image_dir', dest='image_dir',
                       help='directory to load images for demo',
                       default="images")
@@ -167,12 +167,17 @@ if __name__ == '__main__':
   load_name = os.path.join(input_dir,
     'faster_rcnn_{}_{}_{}.pth'.format(args.checksession, args.checkepoch, args.checkpoint))
 
+  # pascal_classes = np.asarray(['__background__',
+  #                      'aeroplane', 'bicycle', 'bird', 'boat',
+  #                      'bottle', 'bus', 'car', 'cat', 'chair',
+  #                      'cow', 'diningtable', 'dog', 'horse',
+  #                      'motorbike', 'person', 'pottedplant',
+  #                      'sheep', 'sofa', 'train', 'tvmonitor'])
+  
   pascal_classes = np.asarray(['__background__',
-                       'aeroplane', 'bicycle', 'bird', 'boat',
-                       'bottle', 'bus', 'car', 'cat', 'chair',
-                       'cow', 'diningtable', 'dog', 'horse',
-                       'motorbike', 'person', 'pottedplant',
-                       'sheep', 'sofa', 'train', 'tvmonitor'])
+                         'bus', 'bike', 'car',
+                         'motor', 'person', 'rider',
+                         'traffic light', 'traffic sign', 'train', 'truck'])
 
   # initilize the network here.
   if args.net == 'vgg16':
