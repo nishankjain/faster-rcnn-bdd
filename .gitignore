@@ -211,3 +211,4 @@ models
 output
 images_*
 *.json
+*.pth
