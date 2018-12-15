@@ -263,10 +263,10 @@ if __name__ == '__main__':
     print(value.shape)
     if value.requires_grad:
       if 'bias' in key:
-        params += [{'params':[value.reshape((-1)).cuda()],'lr':lr*(cfg.TRAIN.DOUBLE_BIAS + 1), \
+        params += [{'params':[value.reshape((-1))],'lr':lr*(cfg.TRAIN.DOUBLE_BIAS + 1), \
                 'weight_decay': cfg.TRAIN.BIAS_DECAY and cfg.TRAIN.WEIGHT_DECAY or 0}]
       else:
-        params += [{'params':[value.reshape((-1)).cuda()],'lr':lr, 'weight_decay': cfg.TRAIN.WEIGHT_DECAY}]
+        params += [{'params':[value.reshape((-1))],'lr':lr, 'weight_decay': cfg.TRAIN.WEIGHT_DECAY}]
 
   if args.optimizer == "adam":
     lr = lr * 0.1
@@ -307,6 +307,8 @@ if __name__ == '__main__':
   if args.use_tfboard:
     from tensorboardX import SummaryWriter
     logger = SummaryWriter("logs")
+  
+  print(fasterRCNN)
 
   for epoch in range(args.start_epoch, args.max_epochs + 1):
     # setting to train mode
