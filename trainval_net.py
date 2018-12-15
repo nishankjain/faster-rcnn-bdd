@@ -297,10 +297,6 @@ if __name__ == '__main__':
     args.start_epoch = checkpoint['epoch']
     fasterRCNN.load_state_dict(checkpoint['model'])
     optimizer.load_state_dict(checkpoint['optimizer'])
-    for state in optimizer.state.values():
-      for k, v in state.items():
-          if isinstance(v, torch.Tensor):
-              state[k] = v.cuda()
     lr = optimizer.param_groups[0]['lr']
     if 'pooling_mode' in checkpoint.keys():
       cfg.POOLING_MODE = checkpoint['pooling_mode']
