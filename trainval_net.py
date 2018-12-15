@@ -259,17 +259,18 @@ if __name__ == '__main__':
 
   params = []
   for key, value in fasterRCNN.named_parameters():
-    print(key)
-    print(value.shape)
+    # print(key)
+    # print(value.shape)
     if value.requires_grad:
       if 'bias' in key:
+        print(key)
         params += [{'params':[value.reshape((-1))],'lr':lr*(cfg.TRAIN.DOUBLE_BIAS + 1), \
                 'weight_decay': cfg.TRAIN.BIAS_DECAY and cfg.TRAIN.WEIGHT_DECAY or 0}]
       else:
         params += [{'params':[value.reshape((-1))],'lr':lr, 'weight_decay': cfg.TRAIN.WEIGHT_DECAY}]
 
-  print(fasterRCNN)
-  
+  # print(fasterRCNN)
+
   if args.optimizer == "adam":
     lr = lr * 0.1
     optimizer = torch.optim.Adam(params)
