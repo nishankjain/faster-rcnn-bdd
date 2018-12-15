@@ -212,3 +212,4 @@ output
 images_*
 *.json
 *.pth
+images_out_test_bdd_trained
