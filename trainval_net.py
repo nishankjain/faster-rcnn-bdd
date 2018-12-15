@@ -270,7 +270,6 @@ if __name__ == '__main__':
 
   params = []
   for key, value in fasterRCNN.named_parameters():
-    print(key)
     if value.requires_grad:
       if 'bias' in key:
         params += [{'params':[value],'lr':lr*(cfg.TRAIN.DOUBLE_BIAS + 1), \
