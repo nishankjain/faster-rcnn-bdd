@@ -258,7 +258,7 @@ if __name__ == '__main__':
   #tr_momentum = args.momentum
 
   params = []
-  for key, value in dict(fasterRCNN.named_parameters()).items():
+  for key, value in fasterRCNN.named_parameters():
     if value.requires_grad:
       if 'bias' in key:
         params += [{'params':[value],'lr':lr*(cfg.TRAIN.DOUBLE_BIAS + 1), \
@@ -284,7 +284,12 @@ if __name__ == '__main__':
     args.session = checkpoint['session']
     args.start_epoch = checkpoint['epoch']
     fasterRCNN.load_state_dict(checkpoint['model'])
+    fasterRCNN.cuda()
     optimizer.load_state_dict(checkpoint['optimizer'])
+    for state in optimizer.state.values():
+      for k, v in state.items():
+          if isinstance(v, torch.Tensor):
+              state[k] = v.cuda()
     lr = optimizer.param_groups[0]['lr']
     if 'pooling_mode' in checkpoint.keys():
       cfg.POOLING_MODE = checkpoint['pooling_mode']
