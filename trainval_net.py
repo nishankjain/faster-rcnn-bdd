@@ -257,6 +257,7 @@ if __name__ == '__main__':
   #tr_momentum = cfg.TRAIN.MOMENTUM
   #tr_momentum = args.momentum
 
+  pdb.set_trace()
   params = []
   for key, value in fasterRCNN.named_parameters():
     print(key)
