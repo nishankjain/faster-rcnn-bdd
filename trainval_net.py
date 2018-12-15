@@ -281,6 +281,10 @@ if __name__ == '__main__':
       'faster_rcnn_{}_{}_{}.pth'.format(args.checksession, args.checkepoch, args.checkpoint))
     print("loading checkpoint %s" % (load_name))
     checkpoint = torch.load(load_name)
+    for key, value in checkpoint.items():
+      print(key)
+      if key == 'optimizer':
+        print(value)
     args.session = checkpoint['session']
     args.start_epoch = checkpoint['epoch']
     fasterRCNN.load_state_dict(checkpoint['model'])
