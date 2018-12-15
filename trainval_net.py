@@ -268,6 +268,8 @@ if __name__ == '__main__':
       else:
         params += [{'params':[value.reshape((-1))],'lr':lr, 'weight_decay': cfg.TRAIN.WEIGHT_DECAY}]
 
+  print(fasterRCNN)
+  
   if args.optimizer == "adam":
     lr = lr * 0.1
     optimizer = torch.optim.Adam(params)
@@ -307,8 +309,6 @@ if __name__ == '__main__':
   if args.use_tfboard:
     from tensorboardX import SummaryWriter
     logger = SummaryWriter("logs")
-  
-  print(fasterRCNN)
 
   for epoch in range(args.start_epoch, args.max_epochs + 1):
     # setting to train mode
