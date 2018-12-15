@@ -290,6 +290,8 @@ if __name__ == '__main__':
       for k, v in state.items():
           if torch.is_tensor(v):
             state[k] = v.cuda()
+            print(k)
+            print(v.shape)
     lr = optimizer.param_groups[0]['lr']
     if 'pooling_mode' in checkpoint.keys():
       cfg.POOLING_MODE = checkpoint['pooling_mode']
