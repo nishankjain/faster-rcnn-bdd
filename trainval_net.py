@@ -259,8 +259,8 @@ if __name__ == '__main__':
 
   params = []
   for key, value in fasterRCNN.named_parameters():
-    # print(key)
-    # print(value.shape)
+    print(key)
+    print(value.shape)
     if value.requires_grad:
       if 'bias' in key:
         print(key)
