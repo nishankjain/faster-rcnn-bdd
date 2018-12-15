@@ -267,7 +267,7 @@ if __name__ == '__main__':
                 'weight_decay': cfg.TRAIN.BIAS_DECAY and cfg.TRAIN.WEIGHT_DECAY or 0}]
       else:
         params += [{'params':[value.reshape((-1))],'lr':lr, 'weight_decay': cfg.TRAIN.WEIGHT_DECAY}]
-
+  params.cuda()
   if args.optimizer == "adam":
     lr = lr * 0.1
     optimizer = torch.optim.Adam(params)
