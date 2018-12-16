@@ -1,10 +1,10 @@
-Setup Instructions
-
-Install CUDA 9.0
-Install NVIDIA Driver 390
-Add CUDA paths to the bashrc file
-
 # A *Faster* Pytorch Implementation of Faster R-CNN
+
+## Setup Instructions
+
+* Install CUDA 9.0
+* Install NVIDIA Driver 390
+* Add CUDA paths to the bashrc file
 
 ## Introduction
 
