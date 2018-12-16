@@ -5,6 +5,12 @@
 * Install CUDA 9.0
 * Install NVIDIA Driver 390
 * Add CUDA paths to the bashrc file
+* Create *data* directory
+* Create *bdd_data* inside *data*
+* Create *ImageSets*, *JPEGImages*, *Annotations* and *results* directory inside *bdd_data*
+* Create *Main* directory inside *ImageSets*
+* Copy all training and validation images from BDD100k images to *JPEGImages*
+* Run *create_val_list* and *create_train_list*
 
 ## Introduction
 
