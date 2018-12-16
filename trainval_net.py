@@ -257,20 +257,14 @@ if __name__ == '__main__':
   #tr_momentum = cfg.TRAIN.MOMENTUM
   #tr_momentum = args.momentum
 
-  pdb.set_trace()
   params = []
   for key, value in fasterRCNN.named_parameters():
-    print(key)
-    print(value.shape)
     if value.requires_grad:
       if 'bias' in key:
-        print(key)
-        params += [{'params':[value.reshape((-1))],'lr':lr*(cfg.TRAIN.DOUBLE_BIAS + 1), \
+        params += [{'params':[value],'lr':lr*(cfg.TRAIN.DOUBLE_BIAS + 1), \
                 'weight_decay': cfg.TRAIN.BIAS_DECAY and cfg.TRAIN.WEIGHT_DECAY or 0}]
       else:
-        params += [{'params':[value.reshape((-1))],'lr':lr, 'weight_decay': cfg.TRAIN.WEIGHT_DECAY}]
-
-  # print(fasterRCNN)
+        params += [{'params':[value],'lr':lr, 'weight_decay': cfg.TRAIN.WEIGHT_DECAY}]
 
   if args.optimizer == "adam":
     lr = lr * 0.1
@@ -290,14 +284,7 @@ if __name__ == '__main__':
     args.session = checkpoint['session']
     args.start_epoch = checkpoint['epoch']
     fasterRCNN.load_state_dict(checkpoint['model'])
-    fasterRCNN.cuda()
     optimizer.load_state_dict(checkpoint['optimizer'])
-    for state in optimizer.state.values():
-      for k, v in state.items():
-          if torch.is_tensor(v):
-            state[k] = v.cuda()
-            print(k)
-            print(v.shape)
     lr = optimizer.param_groups[0]['lr']
     if 'pooling_mode' in checkpoint.keys():
       cfg.POOLING_MODE = checkpoint['pooling_mode']
@@ -385,17 +372,17 @@ if __name__ == '__main__':
         loss_temp = 0
         start = time.time()
 
-      if (step % 1000 == 0):
-        save_name = os.path.join(output_dir, 'faster_rcnn_{}_{}_{}.pth'.format(args.session, epoch, step))
-        save_checkpoint({
-          'session': args.session,
-          'epoch': epoch + 1,
-          'model': fasterRCNN.module.state_dict() if args.mGPUs else fasterRCNN.state_dict(),
-          'optimizer': optimizer.state_dict(),
-          'pooling_mode': cfg.POOLING_MODE,
-          'class_agnostic': args.class_agnostic,
-        }, save_name)
-        print('save model: {}'.format(save_name))
+    
+    save_name = os.path.join(output_dir, 'faster_rcnn_{}_{}_{}.pth'.format(args.session, epoch, step))
+    save_checkpoint({
+      'session': args.session,
+      'epoch': epoch + 1,
+      'model': fasterRCNN.module.state_dict() if args.mGPUs else fasterRCNN.state_dict(),
+      'optimizer': optimizer.state_dict(),
+      'pooling_mode': cfg.POOLING_MODE,
+      'class_agnostic': args.class_agnostic,
+    }, save_name)
+    print('save model: {}'.format(save_name))
 
   if args.use_tfboard:
     logger.close()

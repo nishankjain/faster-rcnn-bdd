@@ -38,7 +38,8 @@ class vgg16(_fasterRCNN):
     self.RCNN_base = nn.Sequential(*list(vgg.features._modules.values())[:-1])
 
     # Fix the layers before conv3:
-    for layer in range(10):
+    # Fixing conv1 block and conv2 block
+    for layer in range(17):
       for p in self.RCNN_base[layer].parameters(): p.requires_grad = False
 
     # self.RCNN_base = _RCNN_base(vgg.features, self.classes, self.dout_base_model)
