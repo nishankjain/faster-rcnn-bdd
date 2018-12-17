@@ -47,16 +47,44 @@ def clip_gradient(model, clip_norm):
     for p in model.parameters():
         if p.requires_grad:
             p.grad.mul_(norm)
+#
+#def vis_detections(im, class_name, dets, thresh=0.8):
+#    for i in range(np.minimum(10, dets.shape[0])):
+ #       bbox = tuple(int(np.round(x)) for x in dets[i, :4])
+#        score = dets[i, -1]
+#        if score > thresh:
+#            cv2.rectangle(im, bbox[0:2], bbox[2:4], (0, 204, 0), 2)
+#            cv2.putText(im, '%s: %.3f' % (class_name, score), (bbox[0], bbox[1] + 15), cv2.FONT_HERSHEY_PLAIN,
+#                        1.0, (0, 0, 255), thickness=1)
+#    return im
+
 
 def vis_detections(im, class_name, dets, thresh=0.8):
+    color = {'traffic sign':(204, 0, 0),
+             'bus':(204, 204, 0),
+             'bike':(166, 153, 204),
+             'car':(0, 204, 0),'motor':(0, 204, 204), 'person':(0, 0, 204)
+             , 'rider':(204, 0, 204),
+                        'traffic light':(204, 153, 153),  'train':(0, 204, 153), 'truck':(153, 0, 204)}
+    thick = 1
+    font_scale = .6
+    font =  cv2.FONT_HERSHEY_TRIPLEX 
     """Visual debugging of detections."""
     for i in range(np.minimum(10, dets.shape[0])):
         bbox = tuple(int(np.round(x)) for x in dets[i, :4])
         score = dets[i, -1]
         if score > thresh:
-            cv2.rectangle(im, bbox[0:2], bbox[2:4], (0, 204, 0), 2)
-            cv2.putText(im, '%s: %.3f' % (class_name, score), (bbox[0], bbox[1] + 15), cv2.FONT_HERSHEY_PLAIN,
-                        1.0, (0, 0, 255), thickness=1)
+            cv2.rectangle(im, bbox[0:2], bbox[2:4], color[class_name], 2)
+
+            text = '%s:%.3f' % (class_name, score)
+            (text_width, text_height) = cv2.getTextSize(text, font, fontScale=font_scale, thickness=thick)[0]
+
+            print(  (text_width, text_height))
+            print(bbox[0]-text_height, bbox[0])
+     
+            cv2.rectangle(im, (bbox[0],bbox[1]-int(text_height*1.2)),(bbox[0]+int(text_width*1.1),bbox[1]), color[class_name], cv2.FILLED)
+            cv2.putText(im, '%s: %.3f' % (class_name, score), (bbox[0], bbox[1] ), font,
+                        font_scale, (0, 0, 0), thickness=thick)
     return im
 
 
