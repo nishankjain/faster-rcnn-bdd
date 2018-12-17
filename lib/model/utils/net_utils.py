@@ -85,8 +85,8 @@ def vis_detections(im, class_name, dets, thresh=0.8):
             text = '%s:%.3f' % (class_name, score)
             (text_width, text_height) = cv2.getTextSize(text, font, fontScale=font_scale, thickness=thick)[0]
 
-            print(  (text_width, text_height))
-            print(bbox[0]-text_height, bbox[0])
+            # print(  (text_width, text_height))
+            # print(bbox[0]-text_height, bbox[0])
      
             cv2.rectangle(im, (bbox[0]-1,bbox[1]-text_height-10),(bbox[0]+20+int(text_width*1 ),bbox[1]+2), color[class_name], cv2.FILLED)
             cv2.putText(im, '%s: %.3f' % (class_name, score), (bbox[0]+5, bbox[1]-5 ), font,
