@@ -59,15 +59,22 @@ def clip_gradient(model, clip_norm):
 #    return im
 
 def vis_detections(im, class_name, dets, thresh=0.8):
-    color = {'traffic sign':(204, 0, 0),
+    color = {'sign':(204, 0, 0),
              'bus':(204, 204, 0),
              'bike':(166, 153, 204),
              'car':(0, 204, 0),'motor':(0, 204, 204), 'person':(0, 0, 204)
              , 'rider':(204, 0, 204),
-                        'traffic light':(204, 153, 153),  'train':(0, 204, 153), 'truck':(153, 0, 204)}
+                        'light':(204, 153, 153),  'train':(0, 204, 153), 'truck':(153, 0, 204)}
+    short_names = {'traffic sign':'sign',
+             'bus':'bus',
+             'bike':'bike',
+             'car':'car','motor':'motor', 'person':'person'
+             , 'rider':'rider',
+                        'traffic light':'light',  'train':'train', 'truck':'truck'}
     thick = 1
-    font_scale = .6
-    font =  cv2.FONT_HERSHEY_DUPLEX 
+    font_scale = .4
+    font =  cv2.FONT_HERSHEY_DUPLEX
+    class_name = short_names[class_name]
     """Visual debugging of detections."""
     for i in range(np.minimum(10, dets.shape[0])):
         bbox = tuple(int(np.round(x)) for x in dets[i, :4])
