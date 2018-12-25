@@ -15,3 +15,5 @@
 For other implementation details, obtaining pretrained models and setup, refer https://github.com/jwyang/faster-rcnn.pytorch
 
 For obtaining the BDD dataset, visit http://bdd-data.berkeley.edu
+
+Get models, results, annotations and detections from https://drive.google.com/drive/folders/1v7qRDaLZqXINDbTPERYI_FNQOv6ukjFJ
